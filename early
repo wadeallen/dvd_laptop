@@ -1,0 +1,21 @@
+#! /bin/bash
+
+date=`date +"%Y-%m-%d"`
+directory='/home/fbcmuncie/Desktop'/${date}'_early' 
+
+mkdir ${directory} 
+gcp /media/fbcmuncie/CANON/PRIVATE/AVCHD/BDMV/STREAM/*.MTS ${directory}/
+cd ${directory}
+for f in *.MTS
+      do 
+      ffmpeg -i "$f" -target ntsc-dvd "${f%.MTS}.mpg"
+done
+rm *.MTS
+echo -e "<dvdauthor>\n<vmgm>\n</vmgm>\n<titleset>\n<titles>\n<pgc>" > ${date}.xml
+for f in *.mpg
+      do 
+      echo -e "<vob file=\""${f}"\" chapters=\""0"\"/>" >> ${date}.xml
+done
+echo -e "</pgc>\n</titles>\n</titleset>\n</dvdauthor>" >> ${date}.xml
+dvdauthor -o ~/Desktop/${date}_DVD -x ${date}.xml
+echo "DVD for ${date} has finished successfully!"

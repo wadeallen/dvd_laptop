@@ -1,0 +1,13 @@
+#! /bin/bash
+
+today=$1
+
+if  [ -z "$today" ]
+then
+        date=`date -dlast-sunday +%Y-%m-%d` 
+	today=$date
+fi
+
+echo $today
+
+growisofs -Z /dev/sr0 -dvd-compat ~/Desktop/${today}_DVD

@@ -1,0 +1,7 @@
+#! /bin/bash
+
+date=`date +"%Y-%m-%d"`
+directory='/home/fbcmuncie/Desktop'/${date}'_late' 
+
+mkdir ${directory} 
+gcp /media/fbcmuncie/CANON/PRIVATE/AVCHD/BDMV/STREAM/*.MTS ${directory}/
