@@ -1,21 +1,38 @@
 #! /bin/bash
 
+# get the current date
 date=`date +"%Y-%m-%d"`
 directory='/home/fbcmuncie/Desktop'/${date}'_early' 
 
+# make a directory with the current date on the Desktop
+
 mkdir ${directory} 
+
+# copy the files from the SD Card to the Directory
 gcp /media/fbcmuncie/CANON/PRIVATE/AVCHD/BDMV/STREAM/*.MTS ${directory}/
+
+# move into the working directory
 cd ${directory}
+
+# for every MTS file, convert to MPG file to burn to DVD
 for f in *.MTS
       do 
       ffmpeg -i "$f" -target ntsc-dvd "${f%.MTS}.mpg"
 done
+
+# remove the MTS files from directory
 rm *.MTS
+
+#Build xml file with the contents of folder. This is used in dvdauthor to build the DVD
 echo -e "<dvdauthor>\n<vmgm>\n</vmgm>\n<titleset>\n<titles>\n<pgc>" > ${date}.xml
 for f in *.mpg
       do 
       echo -e "<vob file=\""${f}"\" chapters=\""0"\"/>" >> ${date}.xml
 done
 echo -e "</pgc>\n</titles>\n</titleset>\n</dvdauthor>" >> ${date}.xml
+
+# Build DVD with dvdauthor based on xml file
 dvdauthor -o ~/Desktop/${date}_DVD -x ${date}.xml
+
+# Convey message that script has run successfully
 echo "DVD for ${date} has finished successfully!"
