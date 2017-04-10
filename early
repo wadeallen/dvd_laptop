@@ -1,6 +1,7 @@
 #! /bin/bash
 
 # get the current date
+
 date=`date +"%Y-%m-%d"`
 directory='/home/fbcmuncie/Desktop'/${date}'_early' 
 
